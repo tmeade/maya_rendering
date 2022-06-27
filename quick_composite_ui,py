@@ -1,0 +1,53 @@
+def get_path_CB(TFBG):
+    path = cmds.fileDialog2(fileMode=2, dialogStyle=2)[0]
+    cmds.textFieldButtonGrp(TFBG, edit=True, text=path)
+
+    return path
+
+
+def build_win():
+    if cmds.window('COMP_WIN', exists=True):
+        cmds.deleteUI('COMP_WIN')
+    cmds.window('COMP_WIN', title='Quick Composite')
+
+    cmds.columnLayout()
+    cmds.textFieldButtonGrp('MAYA_RENDER_PATH_TFBG',
+                                label='Maya Render Path',
+                                buttonLabel='Set',
+                                buttonCommand="get_path_CB('MAYA_RENDER_PATH_TFBG')")
+    cmds.textFieldButtonGrp('NUKE_RENDER_PATH_TFBG',
+                                label='Nuke Render Path',
+                                buttonLabel='Set',
+                                buttonCommand="get_path_CB('NUKE_RENDER_PATH_TFBG')")
+    cmds.button(label='Go', c='go_CB()')
+    cmds.showWindow()
+
+
+def set_window_defaults():
+    root_dir = cmds.workspace(query=True, rootDirectory=True)
+    cmds.textFieldButtonGrp('MAYA_RENDER_PATH_TFBG',
+                            edit=True,
+                            text='{}images'.format(root_dir))
+    cmds.textFieldButtonGrp('NUKE_RENDER_PATH_TFBG',
+                            edit=True,
+                            text='{}comp'.format(root_dir))
+
+def go_CB():
+    data = {
+            'output_name': '',
+            'maya_render_path': cmds.textFieldButtonGrp('MAYA_RENDER_PATH_TFBG', query=True, text=True),
+            'nuke_render_path': '',
+            'nuke_python_script': '',
+            'active_aovs': '',
+            'camera_name': '',
+            'start_frame': '',
+            'end_frame': '',
+            'width': '',
+            'height': '',
+            'background_image': ''
+            }
+
+    print(data)
+
+build_win()
+set_window_defaults()
