@@ -48,6 +48,9 @@ def setup_aovs(enable_aovs=['diffuse', 'specular', 'transmission', 'emission']):
 def setup_render_attributes(data):
     cmds.setAttr('defaultRenderGlobals.startFrame', data['start_frame'])
     cmds.setAttr('defaultRenderGlobals.endFrame', data['end_frame'])
+    cmds.setAttr('defaultRenderGlobals.animation', 1)
+    cmds.setAttr('defaultRenderGlobals.outFormatControl', 0)
+    cmds.setAttr('defaultRenderGlobals.putFrameBeforeExt', 1)
     cmds.setAttr('defaultRenderGlobals.imageFilePrefix', data['output_name'], type='string')
     cmds.setAttr('defaultArnoldRenderOptions.motion_blur_enable', True)
     cmds.setAttr('defaultArnoldRenderOptions.imageFormat', 'exr', type='string')
